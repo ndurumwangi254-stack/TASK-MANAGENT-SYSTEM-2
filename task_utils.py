@@ -1,5 +1,27 @@
 from datetime import datetime
-from validation import validate_task_title, validate_task_description, validate_due_date
+
+# Import validation functions
+try:
+    from validation import validate_task_title, validate_task_description, validate_due_date
+except ImportError:
+    # Fallback if validation module not found
+    def validate_task_title(title):
+        if not isinstance(title, str) or len(title.strip()) == 0:
+            raise ValueError("Title must be a non-empty string.")
+        return True
+    
+    def validate_task_description(description):
+        if not isinstance(description, str) or len(description.strip()) == 0:
+            raise ValueError("Description must be a non-empty string.")
+        return True
+    
+    def validate_due_date(due_date):
+        try:
+            from datetime import datetime
+            datetime.strptime(due_date, "%Y-%m-%d")
+            return True
+        except ValueError:
+            raise ValueError("Due date must be in format YYYY-MM-DD.")
 
 # Define tasks list
 tasks = []
@@ -40,26 +62,20 @@ def view_pending_tasks():
     return pending_tasks
 
 # Implement calculate_progress function
-def calculate_progress():
-    if len(tasks) == 0:
-        progress = {
-            "total_tasks": 0,
-            "completed_tasks": 0,
-            "progress_percentage": 0.0
-        }
-        print("No tasks to calculate progress.")
-        return progress
+def calculate_progress(tasks_list=None):
+    if tasks_list is None:
+        tasks_list = tasks
     
-    total_tasks = len(tasks)
-    completed_tasks = sum(1 for task in tasks if task["completed"])
+    if len(tasks_list) == 0:
+        progress_percentage = 0.0
+        print("No tasks to calculate progress.")
+        return progress_percentage
+    
+    total_tasks = len(tasks_list)
+    completed_tasks = sum(1 for task in tasks_list if task["completed"])
     progress_percentage = (completed_tasks / total_tasks) * 100
     
-    progress = {
-        "total_tasks": total_tasks,
-        "completed_tasks": completed_tasks,
-        "progress_percentage": progress_percentage
-    }
     print(f"Total Tasks: {total_tasks}")
     print(f"Completed Tasks: {completed_tasks}")
     print(f"Progress: {progress_percentage:.2f}%")
-    return progress
+    return progress_percentage
