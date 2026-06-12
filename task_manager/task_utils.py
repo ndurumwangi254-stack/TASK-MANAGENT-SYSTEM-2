@@ -70,11 +70,10 @@ def view_pending_tasks():
         print("No pending tasks!")
         return []
     
-    print("\n--- Pending Tasks ---")
+    print("--- Pending Tasks ---")
     for i, task in enumerate(pending_tasks):
         print(f"{i + 1}. {task['title']} (Due: {task['due_date']})")
         print(f"   Description: {task['description']}")
-    print()
     
     return pending_tasks
 
@@ -110,9 +109,9 @@ def calculate_progress(tasks_list=None):
         "progress_percentage": progress_percentage
     }
     
-    print(f"\n--- Progress ---")
+    print(f"--- Progress ---")
     print(f"Total Tasks: {total_tasks}")
     print(f"Completed Tasks: {completed_tasks}")
-    print(f"Progress: {progress_percentage:.2f}%\n")
+    print(f"Progress: {progress_percentage:.2f}%")
     
     return progress

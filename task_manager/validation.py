@@ -51,14 +51,10 @@ def validate_due_date(due_date):
         bool: True if valid, raises ValueError otherwise
         
     Raises:
-        ValueError: If due date format is invalid or date is in the past
+        ValueError: If due date format is invalid
     """
     try:
-        date_obj = datetime.strptime(due_date, "%Y-%m-%d")
-        if date_obj < datetime.now():
-            raise ValueError("Due date cannot be in the past.")
+        datetime.strptime(due_date, "%Y-%m-%d")
         return True
-    except ValueError as e:
-        if "Due date cannot be in the past" in str(e):
-            raise
+    except ValueError:
         raise ValueError("Due date must be in format YYYY-MM-DD.")
